@@ -1,0 +1,16 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "Django backend using the reusable auth package",
+  "scripts": {
+    "dev": "python run_server.py",
+    "server": "python manage.py runserver 8003",
+    "migrate": "python manage.py migrate",
+    "makemigrations": "python manage.py makemigrations",
+    "createsuperuser": "python manage.py createsuperuser",
+    "collectstatic": "python manage.py collectstatic --noinput",
+    "shell": "python manage.py shell",
+    "clean": "find . -name '*.pyc' -delete && find . -name '__pycache__' -type d -exec rm -rf {} + || true"
+  },
+  "private": true
+}

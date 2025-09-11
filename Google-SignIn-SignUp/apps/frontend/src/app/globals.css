@@ -1,0 +1,149 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom base styles */
+@layer base {
+  html {
+    @apply scroll-smooth;
+  }
+  
+  body {
+    @apply bg-gradient-to-br from-slate-50 to-blue-50 min-h-screen font-sans text-gray-900;
+  }
+}
+
+/* Custom component styles */
+@layer components {
+  .auth-form {
+    @apply max-w-md mx-auto p-8 bg-white rounded-2xl shadow-xl border border-gray-100;
+  }
+  
+  .auth-form__field {
+    @apply mb-6;
+  }
+  
+  .auth-form__label {
+    @apply block text-sm font-semibold text-gray-700 mb-2;
+  }
+  
+  .auth-form__input {
+    @apply w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-gray-900 placeholder-gray-500;
+  }
+  
+  .auth-form__input:disabled {
+    @apply bg-gray-50 cursor-not-allowed text-gray-500;
+  }
+  
+  .auth-form__submit {
+    @apply w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-colors duration-200 disabled:bg-gray-400 disabled:cursor-not-allowed focus:ring-2 focus:ring-blue-500 focus:ring-offset-2;
+  }
+  
+  .btn-primary {
+    @apply inline-flex items-center justify-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-all duration-200 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:bg-gray-400 disabled:cursor-not-allowed;
+  }
+  
+  .btn-secondary {
+    @apply inline-flex items-center justify-center px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg transition-all duration-200 focus:ring-2 focus:ring-green-500 focus:ring-offset-2;
+  }
+  
+  .btn-outline {
+    @apply inline-flex items-center justify-center px-6 py-3 bg-white hover:bg-gray-50 text-gray-700 font-semibold rounded-lg border border-gray-300 transition-all duration-200 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2;
+  }
+  
+  .btn-danger {
+    @apply inline-flex items-center justify-center px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg transition-colors duration-200 focus:ring-2 focus:ring-red-500 focus:ring-offset-2;
+  }
+  
+  .page-container {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+  
+  .page-header {
+    @apply text-center py-12;
+  }
+  
+  .page-title {
+    @apply text-4xl sm:text-5xl font-bold text-gray-900 mb-4;
+  }
+  
+  .page-subtitle {
+    @apply text-xl text-gray-600 max-w-2xl mx-auto;
+  }
+  
+  .nav-links {
+    @apply flex flex-col sm:flex-row items-center justify-center gap-4 mt-8;
+  }
+  
+  .user-info {
+    @apply bg-white rounded-2xl shadow-xl border border-gray-100 p-8 max-w-md mx-auto text-center;
+  }
+  
+  .user-info h3 {
+    @apply text-2xl font-bold text-gray-900 mb-6;
+  }
+  
+  .user-info p {
+    @apply text-gray-600 mb-3;
+  }
+  
+  .user-info strong {
+    @apply text-gray-900 font-semibold;
+  }
+  
+  .divider {
+    @apply flex items-center my-6;
+  }
+  
+  .divider::before,
+  .divider::after {
+    @apply flex-1 h-px bg-gray-300;
+    content: '';
+  }
+  
+  .divider span {
+    @apply px-4 text-sm text-gray-500 font-medium;
+  }
+  
+  .error-message {
+    @apply bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg mb-4;
+  }
+  
+  .success-message {
+    @apply bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-lg mb-4;
+  }
+  
+  .loading {
+    @apply text-center py-12 text-gray-500;
+  }
+  
+  .feature-grid {
+    @apply grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto mt-16;
+  }
+  
+  .feature-card {
+    @apply bg-white rounded-xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-shadow duration-300;
+  }
+  
+  .feature-card h3 {
+    @apply text-xl font-semibold text-gray-900 mb-3;
+  }
+  
+  .feature-card p {
+    @apply text-gray-600 text-sm leading-relaxed;
+  }
+  
+  .google-button-container {
+    @apply w-full;
+  }
+  
+  /* Google button styling enhancements */
+  .google-button-container > div {
+    @apply w-full;
+  }
+  
+  /* Ensure Google button iframe takes full width */
+  .google-button-container iframe {
+    @apply w-full;
+  }
+}

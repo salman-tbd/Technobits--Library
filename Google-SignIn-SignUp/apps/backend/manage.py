@@ -1,0 +1,36 @@
+#!/usr/bin/env python
+"""Django's command-line utility for administrative tasks."""
+import os
+import sys
+
+
+def main():
+    """Run administrative tasks."""
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'backend.settings')
+    try:
+        from django.core.management import execute_from_command_line
+    except ImportError as exc:
+        raise ImportError(
+            "Couldn't import Django. Are you sure it's installed and "
+            "available on your PYTHONPATH environment variable? Did you "
+            "forget to activate a virtual environment?"
+        ) from exc
+    
+    # Auto-add port 8003 for runserver command if no port specified
+    if len(sys.argv) >= 2 and sys.argv[1] == 'runserver':
+        # Check if port is already specified
+        has_port = False
+        for arg in sys.argv[2:]:
+            if ':' in arg or arg.isdigit():
+                has_port = True
+                break
+        
+        # If no port specified, add default port 8003
+        if not has_port:
+            sys.argv.append('8003')
+    
+    execute_from_command_line(sys.argv)
+
+
+if __name__ == '__main__':
+    main()

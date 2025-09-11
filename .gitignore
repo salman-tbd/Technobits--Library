@@ -1,0 +1,308 @@
+# Technobits-Library .gitignore
+# Merged from Google-SignIn-SignUp project
+
+# Dependencies
+node_modules/
+*/node_modules/
+
+# Production builds
+.next/
+dist/
+build/
+staticfiles/
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+ENV/
+env.bak/
+venv.bak/
+*.egg-info/
+.pytest_cache/
+
+# Django
+*.log
+db.sqlite3
+db.sqlite3-journal
+media/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+*.lcov
+
+# nyc test coverage
+.nyc_output
+
+# Dependency directories
+jspm_packages/
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Microbundle cache
+.rpt2_cache/
+.rts2_cache_cjs/
+.rts2_cache_es/
+.rts2_cache_umd/
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# parcel-bundler cache (https://parceljs.org/)
+.cache
+.parcel-cache
+
+# Next.js build output
+.next
+
+# Nuxt.js build / generate output
+.nuxt
+
+# Gatsby files
+.cache/
+public
+
+# Storybook build outputs
+.out
+.storybook-out
+
+# Temporary folders
+tmp/
+temp/
+
+# Turbo
+.turbo
+
+# Docker
+docker-compose.override.yml
+.docker/
+
+# Docker volumes and data
+docker-data/
+postgres-data/
+mysql-data/
+
+# Kubernetes
+*.yaml.local
+*.yml.local
+
+# Security & Secrets
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+secrets/
+.secrets/
+
+# Backup files
+*.backup
+*.bak
+*.old
+*.orig
+*.save
+*.swp
+*.tmp
+
+# Python additional
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.cover
+*.py,cover
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+
+# Django additional
+local_settings.py
+celerybeat-schedule
+celerybeat.pid
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IPython
+profile_default/
+ipython_config.py
+
+# pyenv
+.python-version
+
+# pipenv
+Pipfile.lock
+
+# Poetry
+poetry.lock
+
+# Celery
+celerybeat-schedule
+celerybeat.pid
+
+# SageMath parsed files
+*.sage.py
+
+# Spyder project settings
+.spyderproject
+.spyproject
+
+# Rope project settings
+.ropeproject
+
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre type checker
+.pyre/
+
+# pytype static type analyzer
+.pytype/
+
+# Editor directories and files
+.vscode/settings.json
+.vscode/launch.json
+.vscode/extensions.json
+*.code-workspace
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# Application specific
+.env.example.local
+.env.example.production
+.env.example.development
+
+# Deployment
+deployment/
+.deployment
+.azure/
+
+# Monitoring and Analytics
+.newrelic.yml
+newrelic.js
+
+# Project specific ignores
+# Add any additional patterns specific to Technobits-Library here
+
+# Project: Google-SignIn-SignUp
+# Environment files
+Google-SignIn-SignUp/.env
+Google-SignIn-SignUp/apps/frontend/.env
+Google-SignIn-SignUp/apps/frontend/.env.local
+Google-SignIn-SignUp/apps/backend/.env
+
+# Node.js dependencies
+Google-SignIn-SignUp/apps/frontend/node_modules/
+
+# Python cache and virtual environment
+Google-SignIn-SignUp/apps/backend/__pycache__/
+Google-SignIn-SignUp/apps/backend/.venv/
+
+# Database files
+Google-SignIn-SignUp/apps/backend/db.sqlite3
+Google-SignIn-SignUp/apps/backend/db.sqlite3-journal
+
+# Static files
+Google-SignIn-SignUp/apps/backend/staticfiles/
+
+# Build outputs
+Google-SignIn-SignUp/apps/frontend/.next/
+Google-SignIn-SignUp/apps/frontend/build/
+Google-SignIn-SignUp/apps/frontend/dist/

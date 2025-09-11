@@ -1,0 +1,20 @@
+{
+  "name": "google-signin-signup",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Production-ready authentication system with React frontend and Django backend",
+  "scripts": {
+    "dev:frontend": "cd apps/frontend && npm run dev",
+    "dev:backend": "cd apps/backend && .venv/Scripts/python manage.py runserver 8003",
+    "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\"",
+    "install:frontend": "cd apps/frontend && npm install",
+    "install:backend": "cd apps/backend && python -m venv .venv && .venv/Scripts/pip install -r requirements.txt",
+    "setup:backend": "cd apps/backend && python -m venv .venv && .venv/Scripts/pip install -r requirements.txt && .venv/Scripts/python manage.py migrate",
+    "build:frontend": "cd apps/frontend && npm run build",
+    "migrate": "cd apps/backend && .venv/Scripts/python manage.py migrate",
+    "createsuperuser": "cd apps/backend && .venv/Scripts/python manage.py createsuperuser"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
