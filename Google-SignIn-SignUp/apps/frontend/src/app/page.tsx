@@ -3,10 +3,13 @@
 import Link from "next/link";
 import { useAuth } from "../contexts/AuthContext";
 import { useState } from "react";
+import LandingToggle from "../components/enhanced/LandingToggle";
+import ProgressiveLanding from "../components/enhanced/ProgressiveLanding";
 
 export default function Home() {
   const { user, isLoading, isAuthenticated, logout } = useAuth();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const [landingMode, setLandingMode] = useState<'classic' | 'progressive'>('progressive');
 
   const handleLogout = async () => {
     setIsLoggingOut(true);
@@ -30,8 +33,21 @@ export default function Home() {
     );
   }
 
+  // Show Progressive Experience by default, Classic available via toggle
+  if (landingMode === 'progressive') {
+    return (
+      <>
+        <LandingToggle currentMode={landingMode} onModeChange={setLandingMode} />
+        <ProgressiveLanding />
+      </>
+    );
+  }
+
+  // Classic Experience (Preserved Original Code)
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+    <>
+      <LandingToggle currentMode={landingMode} onModeChange={setLandingMode} />
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
       {/* Header */}
       <div className="bg-white shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -224,5 +240,6 @@ export default function Home() {
         </div>
       </div>
     </div>
+    </>
   );
 }
