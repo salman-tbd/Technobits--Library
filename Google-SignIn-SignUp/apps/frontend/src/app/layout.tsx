@@ -2,13 +2,14 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { AuthProvider } from "../contexts/AuthContext";
 import { RecaptchaProvider } from "../contexts/RecaptchaContext";
+import { NotificationProvider } from "../contexts/NotificationContext";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Google Sign-In/Sign-Up - Authentication Demo",
-  description: "Production-ready authentication system with React and Django",
+  title: "Technobits Directory - Modern Web Integration Showcase",
+  description: "Complete authentication and payment integration examples with Google Auth, Google Pay, and PayPal - built with Next.js 14 and Django 5.0",
 };
 
 export default function RootLayout({
@@ -34,7 +35,9 @@ export default function RootLayout({
       <body className={inter.className}>
         <RecaptchaProvider siteKey={recaptchaSiteKey}>
           <AuthProvider apiBaseUrl={apiBaseUrl}>
-            {children}
+            <NotificationProvider>
+              {children}
+            </NotificationProvider>
           </AuthProvider>
         </RecaptchaProvider>
       </body>
