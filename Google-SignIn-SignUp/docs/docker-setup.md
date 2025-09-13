@@ -1,6 +1,6 @@
 # Docker Setup Guide
 
-This guide explains how to set up and run the Google SignIn/SignUp application using Docker.
+This guide explains how to set up and run the Google SignIn/SignUp Authentication & Payment System using Docker.
 
 ## Prerequisites
 
@@ -11,8 +11,8 @@ This guide explains how to set up and run the Google SignIn/SignUp application u
 ## Project Structure
 
 The project consists of two main services:
-- **Backend**: Django REST API running on port 8003
-- **Frontend**: Next.js application running on port 3003
+- **Backend**: Django REST API running on port 8007
+- **Frontend**: Next.js application running on port 3007
 
 ## Quick Start
 
@@ -31,8 +31,18 @@ Create a `.env` file in the root directory with your environment variables:
 # Google OAuth
 GOOGLE_CLIENT_ID=your_google_client_id_here
 
+# reCAPTCHA (Optional)
+RECAPTCHA_SECRET_KEY=your_recaptcha_secret_key
+RECAPTCHA_SITE_KEY=your_recaptcha_site_key
+
 # Email Service (Optional)
 SENDINBLUE_API_KEY=your_sendinblue_api_key_here
+
+# Payment Processing
+GOOGLE_PAY_MERCHANT_ID=your_google_pay_merchant_id
+PAYPAL_CLIENT_ID=your_paypal_client_id
+PAYPAL_CLIENT_SECRET=your_paypal_client_secret
+PAYPAL_MODE=sandbox
 
 # Django Settings (Optional - defaults provided)
 SECRET_KEY=your_secret_key_here
@@ -72,9 +82,11 @@ docker-compose -f docker-compose.dev.yml down
 
 ### 4. Access the Application
 
-- **Frontend**: http://localhost:3003
-- **Backend API**: http://localhost:8003
-- **Backend Admin**: http://localhost:8003/admin
+- **Frontend**: http://localhost:3007
+- **Backend API**: http://localhost:8007
+- **Backend Admin**: http://localhost:8007/admin
+- **Payment Demo**: http://localhost:3007/demos
+- **Analytics Dashboard**: http://localhost:3007/analytics
 
 ## Docker Commands Reference
 
@@ -136,14 +148,14 @@ docker-compose exec backend python manage.py collectstatic --noinput
 ### Backend Dockerfile (`apps/backend/Dockerfile`)
 - Based on Python 3.11 slim image
 - Installs Python dependencies from `requirements.txt`
-- Runs Django development server on port 8003
+- Runs Django development server on port 8007
 - Includes static file collection
 
 ### Frontend Dockerfile (`apps/frontend/Dockerfile`)
 - Multi-stage build for optimized production image
 - Based on Node.js 18 Alpine image
 - Uses Next.js standalone output for smaller image size
-- Runs on port 3003
+- Runs on port 3007
 
 ### Frontend Development Dockerfile (`apps/frontend/Dockerfile.dev`)
 - Simple development setup with hot reloading
@@ -158,9 +170,14 @@ docker-compose exec backend python manage.py collectstatic --noinput
 | `DEBUG` | `True` | Django debug mode |
 | `SECRET_KEY` | Generated | Django secret key |
 | `ALLOWED_HOSTS` | `localhost,127.0.0.1,backend` | Allowed hosts |
-| `CORS_ALLOWED_ORIGINS` | `http://localhost:3003` | CORS allowed origins |
+| `CORS_ALLOWED_ORIGINS` | `http://localhost:3007` | CORS allowed origins |
 | `GOOGLE_CLIENT_ID` | Empty | Google OAuth client ID |
+| `RECAPTCHA_SECRET_KEY` | Empty | reCAPTCHA secret key |
 | `SENDINBLUE_API_KEY` | Empty | SendinBlue API key |
+| `GOOGLE_PAY_MERCHANT_ID` | Empty | Google Pay merchant ID |
+| `PAYPAL_CLIENT_ID` | Empty | PayPal client ID |
+| `PAYPAL_CLIENT_SECRET` | Empty | PayPal client secret |
+| `PAYPAL_MODE` | `sandbox` | PayPal mode (sandbox/live) |
 | `JWT_ACCESS_TOKEN_LIFETIME_MINUTES` | `15` | JWT access token lifetime |
 | `JWT_REFRESH_TOKEN_LIFETIME_DAYS` | `7` | JWT refresh token lifetime |
 
@@ -169,7 +186,10 @@ docker-compose exec backend python manage.py collectstatic --noinput
 | Variable | Default | Description |
 |----------|---------|-------------|
 | `NODE_ENV` | `production` | Node environment |
-| `NEXT_PUBLIC_API_BASE_URL` | `http://localhost:8003` | Backend API URL |
+| `NEXT_PUBLIC_API_BASE_URL` | `http://localhost:8007` | Backend API URL |
+| `NEXT_PUBLIC_GOOGLE_CLIENT_ID` | Empty | Google OAuth client ID |
+| `NEXT_PUBLIC_RECAPTCHA_SITE_KEY` | Empty | reCAPTCHA site key |
+| `NEXT_PUBLIC_GOOGLE_PAY_MERCHANT_ID` | Empty | Google Pay merchant ID |
 
 ## Troubleshooting
 
@@ -178,8 +198,8 @@ docker-compose exec backend python manage.py collectstatic --noinput
 1. **Port Already in Use**
    ```bash
    # Check what's using the port
-   netstat -tulpn | grep :3003
-   netstat -tulpn | grep :8003
+   netstat -tulpn | grep :3007
+   netstat -tulpn | grep :8007
    
    # Kill the process or change ports in docker-compose.yml
    ```
@@ -281,6 +301,6 @@ For production deployment, consider:
 If you encounter issues:
 1. Check the logs: `docker-compose logs`
 2. Verify environment variables are set correctly
-3. Ensure ports 3003 and 8003 are available
+3. Ensure ports 3007 and 8007 are available
 4. Try rebuilding: `docker-compose build --no-cache`
 

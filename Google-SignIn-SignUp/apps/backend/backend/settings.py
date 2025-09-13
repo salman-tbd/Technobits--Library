@@ -175,7 +175,7 @@ RECAPTCHA_ENABLED = os.getenv('RECAPTCHA_ENABLED', 'True').lower() == 'true'
 RECAPTCHA_MIN_SCORE = float(os.getenv('RECAPTCHA_MIN_SCORE', '0.5'))
 
 # Default development server port
-RUNSERVER_DEFAULT_PORT = '8003'
+RUNSERVER_DEFAULT_PORT = '8007'
 
 # Logging configuration
 LOGGING = {

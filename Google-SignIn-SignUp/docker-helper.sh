@@ -69,7 +69,7 @@ case "$1" in
         check_docker
         print_info "Starting services in production mode..."
         docker-compose up -d --build
-        print_success "Services started! Frontend: http://localhost:3003, Backend: http://localhost:8003"
+        print_success "Services started! Frontend: http://localhost:3007, Backend: http://localhost:8007"
         ;;
     
     "start-dev")

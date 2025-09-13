@@ -281,28 +281,60 @@ newrelic.js
 # Project specific ignores
 # Add any additional patterns specific to Technobits-Library here
 
-# Project: Google-SignIn-SignUp
+# Project: Google-SignIn-SignUp Authentication & Payment System
 # Environment files
 Google-SignIn-SignUp/.env
+Google-SignIn-SignUp/.env.*
 Google-SignIn-SignUp/apps/frontend/.env
-Google-SignIn-SignUp/apps/frontend/.env.local
+Google-SignIn-SignUp/apps/frontend/.env.*
 Google-SignIn-SignUp/apps/backend/.env
+Google-SignIn-SignUp/apps/backend/.env.*
 
 # Node.js dependencies
 Google-SignIn-SignUp/apps/frontend/node_modules/
+Google-SignIn-SignUp/node_modules/
 
 # Python cache and virtual environment
 Google-SignIn-SignUp/apps/backend/__pycache__/
+Google-SignIn-SignUp/apps/backend/*/__pycache__/
+Google-SignIn-SignUp/apps/backend/*/*/__pycache__/
 Google-SignIn-SignUp/apps/backend/.venv/
+Google-SignIn-SignUp/apps/backend/venv/
 
 # Database files
 Google-SignIn-SignUp/apps/backend/db.sqlite3
 Google-SignIn-SignUp/apps/backend/db.sqlite3-journal
+Google-SignIn-SignUp/apps/backend/*.db
+Google-SignIn-SignUp/apps/backend/*.sqlite
 
 # Static files
 Google-SignIn-SignUp/apps/backend/staticfiles/
+Google-SignIn-SignUp/apps/backend/static/
+Google-SignIn-SignUp/apps/backend/media/
 
 # Build outputs
 Google-SignIn-SignUp/apps/frontend/.next/
 Google-SignIn-SignUp/apps/frontend/build/
 Google-SignIn-SignUp/apps/frontend/dist/
+Google-SignIn-SignUp/apps/frontend/out/
+
+# Payment & Security related files
+Google-SignIn-SignUp/apps/backend/payment_keys/
+Google-SignIn-SignUp/apps/backend/certificates/
+Google-SignIn-SignUp/webhook_logs/
+Google-SignIn-SignUp/payment_logs/
+
+# Development and testing files
+Google-SignIn-SignUp/apps/frontend/.vercel/
+Google-SignIn-SignUp/apps/backend/test_data/
+Google-SignIn-SignUp/apps/backend/fixtures/test_*.json
+Google-SignIn-SignUp/debug_*.log
+Google-SignIn-SignUp/test_results/
+
+# Docker related
+Google-SignIn-SignUp/docker-data/
+Google-SignIn-SignUp/.docker/
+
+# Analytics and reporting
+Google-SignIn-SignUp/analytics_reports/
+Google-SignIn-SignUp/payment_reports/
