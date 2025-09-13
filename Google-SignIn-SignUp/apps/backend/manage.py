@@ -16,7 +16,7 @@ def main():
             "forget to activate a virtual environment?"
         ) from exc
     
-    # Auto-add port 8003 for runserver command if no port specified
+    # Auto-add port 8007 for runserver command if no port specified
     if len(sys.argv) >= 2 and sys.argv[1] == 'runserver':
         # Check if port is already specified
         has_port = False
@@ -25,9 +25,9 @@ def main():
                 has_port = True
                 break
         
-        # If no port specified, add default port 8003
+        # If no port specified, add default port 8007
         if not has_port:
-            sys.argv.append('8003')
+            sys.argv.append('8007')
     
     execute_from_command_line(sys.argv)
 

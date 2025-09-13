@@ -44,7 +44,7 @@ if "%1"=="start" (
     call :check_docker
     echo [INFO] Starting services in production mode...
     docker-compose up -d --build
-    echo [SUCCESS] Services started! Frontend: http://localhost:3003, Backend: http://localhost:8003
+    echo [SUCCESS] Services started! Frontend: http://localhost:3007, Backend: http://localhost:8007
 ) else if "%1"=="start-dev" (
     call :check_docker
     echo [INFO] Starting services in development mode...

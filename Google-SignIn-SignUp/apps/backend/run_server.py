@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-Custom server runner to start Django on port 8003
+Custom server runner to start Django on port 8007
 """
 import os
 import sys
@@ -16,6 +16,6 @@ if __name__ == '__main__':
             "forget to activate a virtual environment?"
         ) from exc
     
-    # Always run on port 8003
-    sys.argv = ['manage.py', 'runserver', '8003']
+    # Always run on port 8007
+    sys.argv = ['manage.py', 'runserver', '8007']
     execute_from_command_line(sys.argv)

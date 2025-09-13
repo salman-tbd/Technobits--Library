@@ -192,7 +192,7 @@ The Secure Authentication Team
                         </ul>
                         
                         <div style="text-align: center;">
-                            <a href="http://localhost:3003/login" class="button">Sign In Now</a>
+                            <a href="http://localhost:3007/login" class="button">Sign In Now</a>
                         </div>
                         
                         <p>If you have any questions or need assistance, please don't hesitate to contact our support team.</p>
@@ -219,7 +219,7 @@ What's Next?
 - Google Sign-In is also available for quick access
 - Use "Forgot Password" anytime to reset your password securely
 
-Sign in at: http://localhost:3003/login
+Sign in at: http://localhost:3007/login
 
 Thank you for choosing our Secure Authentication System!
             """.strip()

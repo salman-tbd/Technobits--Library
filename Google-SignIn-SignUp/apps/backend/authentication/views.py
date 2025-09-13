@@ -267,8 +267,8 @@ def forgot_password_view(request):
             uid = urlsafe_base64_encode(force_bytes(user.pk))
             reset_token = f"{uid}-{token}"
             
-            # Create reset URL (for development, we'll use localhost:3003)
-            reset_url = f"http://localhost:3003/reset-password?token={reset_token}"
+            # Create reset URL (for development, we'll use localhost:3007)
+            reset_url = f"http://localhost:3007/reset-password?token={reset_token}"
             
             # Get user's display name
             user_name = user.get_full_name() or user.first_name or user.email.split('@')[0]

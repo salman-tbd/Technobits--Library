@@ -4,7 +4,7 @@
   "description": "Django backend using the reusable auth package",
   "scripts": {
     "dev": "python run_server.py",
-    "server": "python manage.py runserver 8003",
+    "server": "python manage.py runserver 8007",
     "migrate": "python manage.py migrate",
     "makemigrations": "python manage.py makemigrations",
     "createsuperuser": "python manage.py createsuperuser",

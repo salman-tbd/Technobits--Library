@@ -116,10 +116,10 @@ export default function GooglePayCheckout() {
                 {/* Real Google Pay Button */}
                 <div className="space-y-4">
                   <GooglePayButton
+                    key={`googlepay-${amount}`}
                     amount={amount}
                     currency="INR"
                     onSuccess={(result) => {
-                      console.log('Google Pay payment successful:', result);
                       // Store payment result and show modal
                       setPaymentResult({
                         amount,
@@ -134,7 +134,6 @@ export default function GooglePayCheckout() {
                       }, 2000);
                     }}
                     onError={(error) => {
-                      console.error('Google Pay payment error:', error);
                       showNotification({
                         type: 'error',
                         title: '❌ Payment Failed',
@@ -143,7 +142,6 @@ export default function GooglePayCheckout() {
                       });
                     }}
                     onCancel={() => {
-                      console.log('Google Pay payment cancelled');
                       showNotification({
                         type: 'warning',
                         title: '⚠️ Payment Cancelled',
