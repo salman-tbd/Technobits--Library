@@ -1,15 +1,14 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useAuth } from "../contexts/AuthContext";
 import { useState } from "react";
-import LandingToggle from "../components/enhanced/LandingToggle";
-import ProgressiveLanding from "../components/enhanced/ProgressiveLanding";
 
 export default function Home() {
-  const { user, isLoading, isAuthenticated, logout } = useAuth();
+  const { user, isLoading, isAuthenticated, logout, refreshUser } = useAuth();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
-  const [landingMode, setLandingMode] = useState<'classic' | 'progressive'>('progressive');
+  const router = useRouter();
 
   const handleLogout = async () => {
     setIsLoggingOut(true);
@@ -20,6 +19,19 @@ export default function Home() {
     } finally {
       setIsLoggingOut(false);
     }
+  };
+
+  const handleRefreshProfile = async () => {
+    try {
+      await refreshUser();
+      // You could add a toast notification here
+    } catch (error) {
+      console.error("Failed to refresh profile:", error);
+    }
+  };
+
+  const handleNavigateToSettings = () => {
+    router.push('/dashboard?section=security');
   };
 
   if (isLoading) {
@@ -33,21 +45,8 @@ export default function Home() {
     );
   }
 
-  // Show Progressive Experience by default, Classic available via toggle
-  if (landingMode === 'progressive') {
-    return (
-      <>
-        <LandingToggle currentMode={landingMode} onModeChange={setLandingMode} />
-        <ProgressiveLanding />
-      </>
-    );
-  }
-
-  // Classic Experience (Preserved Original Code)
   return (
-    <>
-      <LandingToggle currentMode={landingMode} onModeChange={setLandingMode} />
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
       {/* Header */}
       <div className="bg-white shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -151,7 +150,10 @@ export default function Home() {
                 Quick Actions
               </h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <button className="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                <button 
+                  onClick={handleRefreshProfile}
+                  className="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
                   <span className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
                     🔄
                   </span>
@@ -160,7 +162,10 @@ export default function Home() {
                     <p className="text-sm text-gray-500">Update account info</p>
                   </div>
                 </button>
-                <button className="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                <button 
+                  onClick={handleNavigateToSettings}
+                  className="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
                   <span className="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center mr-3">
                     ⚙️
                   </span>
@@ -240,6 +245,5 @@ export default function Home() {
         </div>
       </div>
     </div>
-    </>
   );
 }

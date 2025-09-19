@@ -1,6 +1,6 @@
-# Google Sign-In/Sign-Up Authentication & Payment System
+# Google Sign-In/Sign-Up Authentication System
 
-A comprehensive, production-ready authentication and payment processing system built with **Next.js 14** (TypeScript) frontend and **Django 5.0** REST API backend. Features secure JWT authentication, Google OAuth integration, unified payment processing (Google Pay & PayPal), payment analytics, email services, and modern UI components.
+A comprehensive, production-ready authentication system built with **Next.js 14** (TypeScript) frontend and **Django 5.0** REST API backend. Features secure JWT authentication, Google OAuth integration, email services, and modern UI components.
 
 ## ✨ Key Features
 
@@ -9,35 +9,22 @@ A comprehensive, production-ready authentication and payment processing system b
 - Google Sign-In integration with server-side verification
 - Password reset functionality with email notifications
 
-💳 **Unified Payment Processing**
-- Google Pay integration with secure token processing
-- PayPal integration with order management and webhooks
-- Unified transaction management across all payment providers
-- Real-time payment analytics and reporting
-- Transaction history and status tracking
-- Secure payment method storage (optional)
-
 🛡️ **Production-Grade Security**
 - JWT tokens stored in HTTP-only cookies (XSS protection)
 - Google reCAPTCHA v3 integration for bot protection
 - Automatic token refresh for seamless user experience
 - CORS/CSRF protection configured for deployment
 - Server-side Google credential verification
-- Secure payment token handling and validation
 
 🎨 **Modern User Interface**
 - Responsive design with Tailwind CSS
 - Form validation with React Hook Form + Zod
 - Loading states and error handling
 - Clean, professional authentication flows
-- Interactive payment interfaces with real-time feedback
-- Payment analytics dashboard with charts and insights
-- Progressive landing page with enhanced UX
 
 📧 **Email Integration**
 - Welcome emails for new users
 - Password reset email notifications
-- Payment confirmation emails
 - SendinBlue API integration
 
 🔧 **Developer Experience**
@@ -45,8 +32,6 @@ A comprehensive, production-ready authentication and payment processing system b
 - Single-command development workflow
 - Comprehensive error handling and debugging
 - Well-documented API endpoints
-- Payment provider abstraction layer
-- Analytics hooks and utilities
 
 ## 🚀 Quick Start
 
@@ -94,33 +79,13 @@ A comprehensive, production-ready authentication and payment processing system b
 
    **Backend** (`apps/backend/.env`):
    ```env
-   # Core Django Settings
    SECRET_KEY=your-secret-key-here
-   DEBUG=True
-   ALLOWED_HOSTS=localhost,127.0.0.1
-   
-   # Authentication & Security
    GOOGLE_CLIENT_ID=your-google-client-id.apps.googleusercontent.com
    RECAPTCHA_SECRET_KEY=your-recaptcha-secret-key
    RECAPTCHA_ENABLED=true
-   RECAPTCHA_MIN_SCORE=0.5
-   
-   # CORS/CSRF Settings
    CORS_ALLOWED_ORIGINS=http://localhost:3007
    CSRF_TRUSTED_ORIGINS=http://localhost:3007
-   
-   # Email Service
    SENDINBLUE_API_KEY=your-sendinblue-api-key-optional
-   
-   # Payment Settings
-   GOOGLE_PAY_MERCHANT_ID=your-google-pay-merchant-id
-   PAYPAL_CLIENT_ID=your-paypal-client-id
-   PAYPAL_CLIENT_SECRET=your-paypal-client-secret
-   PAYPAL_MODE=sandbox  # or 'live' for production
-   
-   # JWT Token Settings
-   JWT_ACCESS_TOKEN_LIFETIME_MINUTES=15
-   JWT_REFRESH_TOKEN_LIFETIME_DAYS=7
    ```
 
    > **Note**: The default ports are `3007` for frontend and `8007` for backend to avoid conflicts.
@@ -162,8 +127,6 @@ A comprehensive, production-ready authentication and payment processing system b
    - **Frontend**: http://localhost:3007
    - **Backend API**: http://localhost:8007
    - **API Health Check**: http://localhost:8007/auth/health/
-   - **Payment Demo**: http://localhost:3007/demos
-   - **Analytics Dashboard**: http://localhost:3007/analytics
 
 ### 🐳 Docker Quick Start (Alternative)
 
@@ -214,29 +177,12 @@ Google-SignIn-SignUp/
 │   │   │   │   ├── page.tsx         # Home page with auth status
 │   │   │   │   ├── login/page.tsx   # Login with email/Google
 │   │   │   │   ├── signup/page.tsx  # Registration page
-│   │   │   │   ├── reset-password/  # Password reset flow
-│   │   │   │   ├── dashboard/       # User dashboard
-│   │   │   │   ├── analytics/       # Payment analytics dashboard
-│   │   │   │   ├── demos/           # Payment integration demos
-│   │   │   │   └── checkout/        # Payment checkout flows
-│   │   │   │       ├── google-pay/  # Google Pay checkout
-│   │   │   │       └── paypal/      # PayPal checkout
+│   │   │   │   └── reset-password/  # Password reset flow
 │   │   │   ├── components/          # Reusable UI components
 │   │   │   │   ├── LoginForm.tsx    # Email/password form
-│   │   │   │   ├── SimpleGoogleButton.tsx  # Google Sign-In
-│   │   │   │   ├── enhanced/        # Enhanced UI components
-│   │   │   │   │   ├── LandingToggle.tsx    # Landing page toggle
-│   │   │   │   │   └── ProgressiveLanding.tsx  # Progressive landing
-│   │   │   │   └── payments/        # Payment components
-│   │   │   │       ├── GooglePayButton.tsx     # Google Pay integration
-│   │   │   │       ├── PayPalButton.tsx        # PayPal integration
-│   │   │   │       └── PaymentSuccessModal.tsx # Success modal
+│   │   │   │   └── SimpleGoogleButton.tsx  # Google Sign-In
 │   │   │   ├── contexts/            # React Context providers
-│   │   │   │   ├── AuthContext.tsx  # Auth state management
-│   │   │   │   ├── NotificationContext.tsx  # Notifications
-│   │   │   │   └── RecaptchaContext.tsx     # reCAPTCHA provider
-│   │   │   ├── hooks/               # Custom React hooks
-│   │   │   │   └── usePaymentAnalytics.ts   # Payment analytics
+│   │   │   │   └── AuthContext.tsx  # Auth state management
 │   │   │   └── lib/                 # Utilities and API client
 │   │   │       ├── api.ts           # Type-safe API client
 │   │   │       ├── types.ts         # TypeScript definitions
@@ -246,18 +192,11 @@ Google-SignIn-SignUp/
 │   │
 │   └── backend/                     # Django 5.0 REST API backend
 │       ├── authentication/         # Django auth app
-│       │   ├── views.py            # Auth API endpoints
+│       │   ├── views.py            # API endpoints
 │       │   ├── serializers.py      # Data validation
 │       │   ├── utils.py            # JWT & Google helpers
 │       │   ├── email_service.py    # SendinBlue integration
-│       │   ├── recaptcha_utils.py  # reCAPTCHA validation
 │       │   └── authentication.py   # Custom JWT auth class
-│       ├── payments/               # Payment processing app
-│       │   ├── models.py           # Payment transaction models
-│       │   ├── views.py            # Payment API endpoints
-│       │   ├── services.py         # Payment service layer
-│       │   ├── serializers.py      # Payment data validation
-│       │   └── urls.py             # Payment URL patterns
 │       ├── backend/                # Django project config
 │       │   ├── settings.py         # Comprehensive settings
 │       │   └── urls.py             # URL configuration
@@ -267,12 +206,7 @@ Google-SignIn-SignUp/
 ├── docs/                           # Documentation
 │   ├── folder-structure.md         # Detailed project structure
 │   ├── google-oauth-setup.md       # Google OAuth setup guide
-│   ├── recaptcha-setup.md          # reCAPTCHA setup guide
 │   └── docker-setup.md            # Complete Docker guide
-├── docker-compose.yml              # Production Docker setup
-├── docker-compose.dev.yml          # Development Docker setup
-├── docker-helper.bat               # Windows Docker helper script
-├── docker-helper.sh                # Unix Docker helper script
 ├── .nvmrc                          # Node.js version specification
 ├── package.json                    # Root development scripts
 └── README.md                       # This file
@@ -286,10 +220,6 @@ Google-SignIn-SignUp/
 - **Tailwind CSS** - Utility-first styling
 - **React Hook Form** - Form handling with validation
 - **Zod** - Schema validation and type inference
-- **Framer Motion** - Animations and transitions
-- **Recharts** - Data visualization for analytics
-- **Lottie React** - Animated graphics and icons
-- **React Hot Toast** - Notification system
 
 ### Backend
 - **Django 5.0** - Python web framework
@@ -298,12 +228,6 @@ Google-SignIn-SignUp/
 - **Google Auth Library** - Google OAuth verification
 - **SendinBlue API** - Email service integration
 - **SQLite** - Database (easily configurable for PostgreSQL/MySQL)
-
-### Payment Processing
-- **Google Pay API** - Secure payment processing with tokenization
-- **PayPal REST API** - Order creation, capture, and webhook handling
-- **Unified Payment Models** - Provider-agnostic transaction management
-- **Payment Analytics** - Real-time transaction reporting and insights
 
 ## 🛠️ Available Scripts
 
@@ -332,9 +256,7 @@ npm run build:frontend        # Build frontend for production
 
 ## 🔌 API Endpoints
 
-The Django backend provides comprehensive REST APIs for authentication and payment processing:
-
-### Authentication Endpoints
+The Django backend provides a comprehensive REST API for authentication:
 
 | Method | Endpoint | Description | Auth Required |
 |--------|----------|-------------|---------------|
@@ -347,18 +269,6 @@ The Django backend provides comprehensive REST APIs for authentication and payme
 | POST | `/auth/forgot-password/` | Request password reset email | ❌ |
 | POST | `/auth/reset-password/` | Reset password with token | ❌ |
 | GET | `/auth/health/` | API health check | ❌ |
-
-### Payment Endpoints
-
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| POST | `/payments/google-pay/process/` | Process Google Pay payment | ✅ |
-| POST | `/payments/paypal/create-order/` | Create PayPal order | ✅ |
-| POST | `/payments/paypal/capture-order/` | Capture PayPal order | ✅ |
-| POST | `/payments/paypal/webhook/` | PayPal webhook handler | ❌ |
-| GET | `/payments/transactions/` | List user transactions | ✅ |
-| GET | `/payments/transactions/<id>/` | Get transaction details | ✅ |
-| GET | `/payments/analytics/` | Get payment analytics data | ✅ |
 
 ### Request/Response Examples
 
@@ -381,33 +291,6 @@ Content-Type: application/json
 
 {
   "credential": "google-jwt-credential-from-frontend"
-}
-```
-
-**Google Pay Payment**
-```bash
-POST /payments/google-pay/process/
-Content-Type: application/json
-Authorization: Bearer <access-token>
-
-{
-  "payment_token": "google-pay-payment-token",
-  "amount": "29.99",
-  "currency": "USD",
-  "description": "Premium subscription"
-}
-```
-
-**PayPal Create Order**
-```bash
-POST /payments/paypal/create-order/
-Content-Type: application/json
-Authorization: Bearer <access-token>
-
-{
-  "amount": "29.99",
-  "currency": "USD",
-  "description": "Premium subscription"
 }
 ```
 
@@ -436,44 +319,6 @@ Authorization: Bearer <access-token>
 
 📚 **Complete reCAPTCHA Guide**: See [docs/recaptcha-setup.md](docs/recaptcha-setup.md) for detailed setup instructions, configuration options, and troubleshooting.
 
-## 💳 Payment Provider Setup
-
-### Google Pay Setup
-
-1. **Create Google Pay Business Console Account**: Go to [Google Pay Business Console](https://pay.google.com/business/console)
-2. **Enable Google Pay API**: In your Google Cloud Console project
-3. **Configure Payment Methods**: Set up accepted payment methods
-4. **Get Merchant ID**: Copy your Google Pay Merchant ID
-5. **Configure Environment Variables**:
-   ```env
-   # Frontend
-   NEXT_PUBLIC_GOOGLE_PAY_MERCHANT_ID=your-merchant-id
-   
-   # Backend
-   GOOGLE_PAY_MERCHANT_ID=your-merchant-id
-   ```
-
-### PayPal Setup
-
-1. **Create PayPal Developer Account**: Go to [PayPal Developer](https://developer.paypal.com/)
-2. **Create Application**: In your PayPal developer dashboard
-3. **Get API Credentials**: Copy Client ID and Client Secret
-4. **Configure Webhooks**: Set up webhook endpoint for payment notifications
-5. **Configure Environment Variables**:
-   ```env
-   # Backend
-   PAYPAL_CLIENT_ID=your-paypal-client-id
-   PAYPAL_CLIENT_SECRET=your-paypal-client-secret
-   PAYPAL_MODE=sandbox  # Use 'live' for production
-   ```
-
-### Payment Testing
-
-- **Google Pay**: Use test cards provided in Google Pay documentation
-- **PayPal**: Use PayPal sandbox accounts for testing
-- **Demo Page**: Visit `/demos` to test payment integrations
-- **Analytics**: View transaction data in `/analytics` dashboard
-
 ## 🚀 Deployment
 
 ### Frontend (Next.js)
@@ -493,7 +338,6 @@ vercel --prod
 NEXT_PUBLIC_API_BASE_URL=https://your-api-domain.com
 NEXT_PUBLIC_GOOGLE_CLIENT_ID=your-google-client-id.apps.googleusercontent.com
 NEXT_PUBLIC_RECAPTCHA_SITE_KEY=your-recaptcha-site-key
-NEXT_PUBLIC_GOOGLE_PAY_MERCHANT_ID=your-google-pay-merchant-id
 ```
 
 ### Backend (Django)
@@ -528,12 +372,6 @@ SENDINBLUE_API_KEY=your-sendinblue-api-key
 
 # Google OAuth
 GOOGLE_CLIENT_ID=your-google-client-id.apps.googleusercontent.com
-
-# Payment Processing
-GOOGLE_PAY_MERCHANT_ID=your-google-pay-merchant-id
-PAYPAL_CLIENT_ID=your-paypal-client-id
-PAYPAL_CLIENT_SECRET=your-paypal-client-secret
-PAYPAL_MODE=live
 ```
 
 **Database Configuration:**
@@ -624,8 +462,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - **[Project Structure](docs/folder-structure.md)** - Detailed explanation of the codebase organization
 - **[Google OAuth Setup](docs/google-oauth-setup.md)** - Complete guide for configuring Google authentication
-- **[reCAPTCHA Setup](docs/recaptcha-setup.md)** - Complete guide for configuring reCAPTCHA protection
-- **[Payment Integration](docs/payment-setup.md)** - Complete guide for Google Pay and PayPal integration
 - **[Docker Setup](docs/docker-setup.md)** - Complete containerization guide with Docker and Docker Compose
 - **API Documentation** - Comprehensive REST API reference (see API Endpoints section above)
 

@@ -165,3 +165,156 @@ class GoogleCredentialVerifier:
             user.save()
         
         return user
+
+
+class TwoFactorRateLimiter:
+    """Rate limiter for Two-Factor Authentication attempts."""
+    
+    # Rate limiting configuration
+    MAX_ATTEMPTS_PER_USER = 5  # Maximum attempts per user per time window
+    MAX_ATTEMPTS_PER_IP = 10   # Maximum attempts per IP per time window
+    TIME_WINDOW_MINUTES = 15   # Time window in minutes
+    LOCKOUT_DURATION_MINUTES = 30  # How long to lock out after max attempts
+    
+    @classmethod
+    def is_rate_limited(cls, user, ip_address=None):
+        """
+        Check if user or IP is rate limited for 2FA attempts.
+        
+        Args:
+            user: Django User instance
+            ip_address: Client IP address (optional)
+            
+        Returns:
+            tuple: (is_limited, remaining_attempts, lockout_ends_at)
+        """
+        from django.utils import timezone
+        from datetime import timedelta
+        from .models import TwoFactorAttempt
+        
+        now = timezone.now()
+        time_window_start = now - timedelta(minutes=cls.TIME_WINDOW_MINUTES)
+        lockout_end = now - timedelta(minutes=cls.LOCKOUT_DURATION_MINUTES)
+        
+        # Check user-based rate limiting
+        user_attempts = TwoFactorAttempt.objects.filter(
+            user=user,
+            created_at__gte=time_window_start,
+            success=False
+        ).count()
+        
+        # Check for recent lockout period
+        recent_failures = TwoFactorAttempt.objects.filter(
+            user=user,
+            created_at__gte=lockout_end,
+            success=False
+        ).count()
+        
+        # If user has too many recent failures, check if still in lockout
+        if recent_failures >= cls.MAX_ATTEMPTS_PER_USER:
+            last_failure = TwoFactorAttempt.objects.filter(
+                user=user,
+                success=False
+            ).order_by('-created_at').first()
+            
+            if last_failure:
+                lockout_ends_at = last_failure.created_at + timedelta(minutes=cls.LOCKOUT_DURATION_MINUTES)
+                if now < lockout_ends_at:
+                    return True, 0, lockout_ends_at
+        
+        # Check current window attempts
+        if user_attempts >= cls.MAX_ATTEMPTS_PER_USER:
+            # Calculate when lockout ends
+            lockout_ends_at = now + timedelta(minutes=cls.LOCKOUT_DURATION_MINUTES)
+            return True, 0, lockout_ends_at
+        
+        # Check IP-based rate limiting (if IP provided)
+        if ip_address:
+            ip_attempts = TwoFactorAttempt.objects.filter(
+                ip_address=ip_address,
+                created_at__gte=time_window_start,
+                success=False
+            ).count()
+            
+            if ip_attempts >= cls.MAX_ATTEMPTS_PER_IP:
+                lockout_ends_at = now + timedelta(minutes=cls.LOCKOUT_DURATION_MINUTES)
+                return True, 0, lockout_ends_at
+        
+        # Calculate remaining attempts
+        remaining_attempts = cls.MAX_ATTEMPTS_PER_USER - user_attempts
+        
+        return False, remaining_attempts, None
+    
+    @classmethod
+    def log_attempt(cls, user, ip_address, success, attempt_type='totp'):
+        """
+        Log a 2FA verification attempt.
+        
+        Args:
+            user: Django User instance
+            ip_address: Client IP address
+            success: Boolean indicating if attempt was successful
+            attempt_type: Type of attempt ('totp' or 'backup')
+        """
+        from .models import TwoFactorAttempt
+        
+        try:
+            TwoFactorAttempt.objects.create(
+                user=user,
+                ip_address=ip_address or '0.0.0.0',
+                success=success,
+                attempt_type=attempt_type
+            )
+        except Exception as e:
+            # Don't fail the request if logging fails
+            logger.error(f"Failed to log 2FA attempt: {str(e)}")
+    
+    @classmethod
+    def clean_old_attempts(cls, days_to_keep=30):
+        """
+        Clean up old 2FA attempt records to prevent database bloat.
+        
+        Args:
+            days_to_keep: Number of days of records to keep
+        """
+        from django.utils import timezone
+        from datetime import timedelta
+        from .models import TwoFactorAttempt
+        
+        cutoff_date = timezone.now() - timedelta(days=days_to_keep)
+        deleted_count = TwoFactorAttempt.objects.filter(
+            created_at__lt=cutoff_date
+        ).delete()[0]
+        
+        logger.info(f"Cleaned up {deleted_count} old 2FA attempt records")
+        return deleted_count
+    
+    @classmethod
+    def get_rate_limit_message(cls, remaining_attempts, lockout_ends_at):
+        """
+        Generate user-friendly rate limit message.
+        
+        Args:
+            remaining_attempts: Number of attempts remaining
+            lockout_ends_at: When the lockout ends (if applicable)
+            
+        Returns:
+            str: User-friendly message
+        """
+        if lockout_ends_at:
+            from django.utils import timezone
+            
+            time_left = lockout_ends_at - timezone.now()
+            minutes_left = int(time_left.total_seconds() / 60)
+            
+            if minutes_left <= 0:
+                return "Too many failed attempts. Please try again."
+            elif minutes_left == 1:
+                return "Too many failed attempts. Please try again in 1 minute."
+            else:
+                return f"Too many failed attempts. Please try again in {minutes_left} minutes."
+        else:
+            if remaining_attempts == 1:
+                return f"Invalid code. You have {remaining_attempts} attempt remaining."
+            else:
+                return f"Invalid code. You have {remaining_attempts} attempts remaining."

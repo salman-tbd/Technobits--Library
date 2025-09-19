@@ -1,4 +1,13 @@
-import { ApiError, User, AuthResponse } from "./types";
+import { 
+  ApiError, 
+  User, 
+  AuthResponse, 
+  TwoFactorSetupResponse,
+  TwoFactorEnableResponse,
+  TwoFactorVerifyResponse,
+  TwoFactorStatus,
+  TwoFactorLoginResponse
+} from "./types";
 
 export class AuthApiClient {
   constructor(private baseUrl: string) {}
@@ -50,12 +59,12 @@ export class AuthApiClient {
     return {} as T;
   }
 
-  async login(email: string, password: string, recaptchaToken?: string): Promise<AuthResponse> {
+  async login(email: string, password: string, recaptchaToken?: string): Promise<TwoFactorLoginResponse> {
     const payload: any = { email, password };
     if (recaptchaToken) {
       payload.recaptcha_token = recaptchaToken;
     }
-    return this.request<AuthResponse>("/auth/login/", {
+    return this.request<TwoFactorLoginResponse>("/auth/login/", {
       method: "POST",
       body: JSON.stringify(payload),
     });
@@ -107,6 +116,66 @@ export class AuthApiClient {
     const payload: any = { token, password };
     if (recaptchaToken) payload.recaptcha_token = recaptchaToken;
     return this.request<{ message: string }>("/auth/reset-password/", {
+      method: "POST",
+      body: JSON.stringify(payload),
+    });
+  }
+
+  // Two-Factor Authentication Methods
+
+  async twoFactorSetup(): Promise<TwoFactorSetupResponse> {
+    return this.request<TwoFactorSetupResponse>("/auth/2fa/setup/", {
+      method: "POST",
+    });
+  }
+
+  async twoFactorEnable(totpCode: string): Promise<TwoFactorEnableResponse> {
+    return this.request<TwoFactorEnableResponse>("/auth/2fa/enable/", {
+      method: "POST",
+      body: JSON.stringify({ totp_code: totpCode }),
+    });
+  }
+
+  async twoFactorVerify(totpCode?: string, backupCode?: string): Promise<TwoFactorVerifyResponse> {
+    const payload: any = {};
+    if (totpCode) payload.totp_code = totpCode;
+    if (backupCode) payload.backup_code = backupCode;
+    
+    return this.request<TwoFactorVerifyResponse>("/auth/2fa/verify/", {
+      method: "POST",
+      body: JSON.stringify(payload),
+    });
+  }
+
+  async twoFactorDisable(password: string, totpCode?: string, backupCode?: string): Promise<{ message: string }> {
+    const payload: any = { password };
+    if (totpCode) payload.totp_code = totpCode;
+    if (backupCode) payload.backup_code = backupCode;
+    
+    return this.request<{ message: string }>("/auth/2fa/disable/", {
+      method: "POST",
+      body: JSON.stringify(payload),
+    });
+  }
+
+  async twoFactorStatus(): Promise<TwoFactorStatus> {
+    return this.request<TwoFactorStatus>("/auth/2fa/status/");
+  }
+
+  async twoFactorLoginComplete(
+    tempToken: string, 
+    userId: number, 
+    totpCode?: string, 
+    backupCode?: string
+  ): Promise<AuthResponse> {
+    const payload: any = {
+      temp_token: tempToken,
+      user_id: userId,
+    };
+    if (totpCode) payload.totp_code = totpCode;
+    if (backupCode) payload.backup_code = backupCode;
+    
+    return this.request<AuthResponse>("/auth/login/2fa-complete/", {
       method: "POST",
       body: JSON.stringify(payload),
     });

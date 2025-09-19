@@ -1,0 +1,338 @@
+# =============================================================================
+# TECHNOBTIS LIBRARIES - GOOGLE SIGNIN/SIGNUP PROJECT
+# =============================================================================
+# Comprehensive .gitignore for Django + Next.js + TypeScript stack
+# Updated: September 2025
+
+# =============================================================================
+# DEPENDENCIES & NODE MODULES
+# =============================================================================
+node_modules/
+*/node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.pnpm-debug.log*
+.yarn-integrity
+.npm
+.eslintcache
+jspm_packages/
+
+# Package manager lock files (optional - comment out if you want to commit them)
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
+
+# =============================================================================
+# ENVIRONMENT VARIABLES & SECRETS
+# =============================================================================
+.env
+.env.local
+.env.development
+.env.development.local
+.env.test
+.env.test.local
+.env.production
+.env.production.local
+.env.staging
+
+# Google OAuth credentials
+google-credentials.json
+client_secret*.json
+service-account*.json
+
+# API Keys and secrets
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+secrets/
+.secrets/
+
+# =============================================================================
+# PYTHON & DJANGO
+# =============================================================================
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+env/
+venv/
+.venv/
+ENV/
+env.bak/
+venv.bak/
+.conda/
+
+# Django specific
+*.log
+db.sqlite3
+db.sqlite3-journal
+media/
+staticfiles/
+static/
+local_settings.py
+celerybeat-schedule
+celerybeat.pid
+
+# Django migrations (uncomment if you want to ignore migrations)
+# */migrations/*.py
+# !*/migrations/__init__.py
+
+# =============================================================================
+# NEXT.JS & REACT
+# =============================================================================
+# Next.js build outputs
+.next/
+.next
+out/
+
+# Production build
+build/
+dist/
+
+# Cache directories
+.cache/
+.parcel-cache
+.rpt2_cache/
+.rts2_cache_cjs/
+.rts2_cache_es/
+.rts2_cache_umd/
+
+# Turbo
+.turbo
+
+# =============================================================================
+# TYPESCRIPT & JAVASCRIPT
+# =============================================================================
+# TypeScript cache
+*.tsbuildinfo
+.tscache/
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+*.lcov
+.nyc_output
+
+# =============================================================================
+# TESTING
+# =============================================================================
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+
+# Jest
+jest-coverage/
+
+# =============================================================================
+# DEVELOPMENT TOOLS & IDE
+# =============================================================================
+# VS Code
+.vscode/
+*.code-workspace
+
+# IntelliJ IDEA
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# Sublime Text
+*.sublime-workspace
+*.sublime-project
+
+# Vim
+*.swp
+*.swo
+*~
+
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*
+
+# =============================================================================
+# OPERATING SYSTEM FILES
+# =============================================================================
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.AppleDouble
+.LSOverride
+.Spotlight-V100
+.Trashes
+.DocumentRevisions-V100
+.fseventsd
+.TemporaryItems
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# =============================================================================
+# TEMPORARY & BACKUP FILES
+# =============================================================================
+*.tmp
+*.temp
+*.backup
+*.bak
+*.old
+*.orig
+*.save
+*.log
+
+# =============================================================================
+# DOCKER & CONTAINERIZATION
+# =============================================================================
+# Docker override files
+docker-compose.override.yml
+.docker/
+
+# Docker volumes and data
+docker-data/
+postgres-data/
+mysql-data/
+redis-data/
+
+# =============================================================================
+# CLOUD & DEPLOYMENT
+# =============================================================================
+# Vercel
+.vercel
+
+# Netlify
+.netlify
+
+# AWS
+.aws/
+.eb/
+
+# Azure
+.azure/
+.deployment
+
+# Heroku
+.heroku/
+
+# Google Cloud
+.gcloud/
+
+# =============================================================================
+# MONITORING & ANALYTICS
+# =============================================================================
+.newrelic.yml
+newrelic.js
+
+# Sentry
+.sentryclirc
+
+# =============================================================================
+# DOCUMENTATION & GENERATED FILES
+# =============================================================================
+# Generated documentation
+docs/_build/
+site/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# =============================================================================
+# PROJECT SPECIFIC
+# =============================================================================
+# Custom uploads directory
+uploads/
+user-uploads/
+
+# Generated certificates for development
+certs/
+ssl/
+
+# Local configuration files
+config.local.json
+settings.local.py
+
+# Test files and fixtures
+test-results/
+fixtures/test-data/
+
+# Temporary authentication tokens
+.auth-tokens
+auth-cache/
+
+# =============================================================================
+# OPTIONAL: PACKAGE MANAGER FILES
+# =============================================================================
+# Uncomment these if you don't want to commit lock files
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
+
+# =============================================================================
+# END OF .GITIGNORE
+# =============================================================================
