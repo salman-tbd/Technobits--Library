@@ -5,7 +5,6 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 from datetime import timedelta
-from decimal import Decimal
 
 # Load environment variables from .env file
 load_dotenv()
@@ -34,16 +33,17 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt.token_blacklist',
     'corsheaders',
     'authentication',
-    'payments',
 ]
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
+    'authentication.middleware.IPBlockMiddleware',  # Check blocked IPs first
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',  # User auth must come before rate limiting
+    'authentication.middleware.RateLimitMiddleware',  # Rate limiting with user context
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -75,6 +75,34 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+# Redis Configuration
+REDIS_URL = os.getenv('REDIS_URL', 'redis://localhost:6379/1')
+
+# Cache Configuration (fallback to default when Redis unavailable)
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'unique-snowflake',
+        'OPTIONS': {
+            'MAX_ENTRIES': 1000,
+            'CULL_FREQUENCY': 3,
+        },
+        'KEY_PREFIX': 'auth_cache',
+        'TIMEOUT': 300,  # 5 minutes default timeout
+    }
+}
+
+# Redis Configuration (for when Redis is available)
+# Uncomment and use this when Redis is installed:
+# CACHES = {
+#     'default': {
+#         'BACKEND': 'django.core.cache.backends.redis.RedisCache',
+#         'LOCATION': REDIS_URL,
+#         'KEY_PREFIX': 'auth_cache',
+#         'TIMEOUT': 300,  # 5 minutes default timeout
+#     }
+# }
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
@@ -174,6 +202,9 @@ RECAPTCHA_SECRET_KEY = os.getenv('RECAPTCHA_SECRET_KEY', '')
 RECAPTCHA_ENABLED = os.getenv('RECAPTCHA_ENABLED', 'True').lower() == 'true'
 RECAPTCHA_MIN_SCORE = float(os.getenv('RECAPTCHA_MIN_SCORE', '0.5'))
 
+# Two-Factor Authentication settings
+TOTP_ENCRYPTION_KEY = os.getenv('TOTP_ENCRYPTION_KEY', '')
+
 # Default development server port
 RUNSERVER_DEFAULT_PORT = '8007'
 
@@ -196,38 +227,5 @@ LOGGING = {
             'level': 'DEBUG',
             'propagate': False,
         },
-        'payments': {
-            'handlers': ['console'],
-            'level': 'DEBUG',
-            'propagate': False,
-        },
     },
 }
-
-# ============================================================================
-# PAYMENT GATEWAY SETTINGS
-# ============================================================================
-
-# Google Pay Configuration
-GOOGLE_PAY_MERCHANT_ID = os.getenv('GOOGLE_PAY_MERCHANT_ID', '')
-GOOGLE_PAY_ENVIRONMENT = os.getenv('GOOGLE_PAY_ENVIRONMENT', 'TEST')  # TEST or PRODUCTION
-
-# PayPal Configuration
-PAYPAL_CLIENT_ID = os.getenv('PAYPAL_CLIENT_ID', '')
-PAYPAL_SECRET_KEY = os.getenv('PAYPAL_SECRET_KEY', '')
-PAYPAL_BASE_URL = os.getenv('PAYPAL_BASE_URL', 'https://api-m.sandbox.paypal.com')  # Sandbox by default
-PAYPAL_WEBHOOK_ID = os.getenv('PAYPAL_WEBHOOK_ID', '')  # Optional for webhook verification
-
-# Payment Processing Settings
-PAYMENT_CURRENCY_CHOICES = ['USD', 'EUR', 'GBP', 'INR', 'CAD', 'AUD']
-PAYMENT_DEFAULT_CURRENCY = 'USD'
-PAYMENT_MAX_AMOUNT = Decimal('10000.00')  # Maximum payment amount
-PAYMENT_MIN_AMOUNT = Decimal('0.01')  # Minimum payment amount
-
-# Transaction Settings
-TRANSACTION_ID_PREFIX = os.getenv('TRANSACTION_ID_PREFIX', 'TXN')
-TRANSACTION_TIMEOUT_MINUTES = int(os.getenv('TRANSACTION_TIMEOUT_MINUTES', '30'))
-
-# Demo Mode Settings (for development)
-PAYMENT_DEMO_MODE = os.getenv('PAYMENT_DEMO_MODE', 'True').lower() == 'true'
-PAYMENT_SIMULATE_FAILURES = os.getenv('PAYMENT_SIMULATE_FAILURES', 'False').lower() == 'true'

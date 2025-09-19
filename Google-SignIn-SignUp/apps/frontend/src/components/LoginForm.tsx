@@ -11,6 +11,7 @@ import { useRecaptchaForm } from "../contexts/RecaptchaContext";
 
 export const LoginForm: React.FC<LoginFormProps> = ({
   onSuccess,
+  onLoginResponse,
   onError,
   onForgotPasswordSuccess,
   className = "",
@@ -38,8 +39,19 @@ export const LoginForm: React.FC<LoginFormProps> = ({
       // Get reCAPTCHA token before submitting
       const recaptchaToken = await getRecaptchaToken('login');
       
-      await login(data.email, data.password, recaptchaToken || undefined);
-      onSuccess?.();
+      const response = await login(data.email, data.password, recaptchaToken || undefined);
+      
+      // Handle different response types
+      if (onLoginResponse) {
+        // New 2FA-aware callback
+        onLoginResponse(response);
+      } else if (!response.requires_2fa && response.user) {
+        // Legacy callback for backward compatibility
+        onSuccess?.();
+      } else if (response.requires_2fa) {
+        // 2FA required but no handler provided
+        onError?.("Two-factor authentication is required but not supported in this form.");
+      }
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "Sign in failed";
       onError?.(errorMessage);

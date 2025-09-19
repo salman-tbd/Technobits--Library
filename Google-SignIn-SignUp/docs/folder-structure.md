@@ -1,6 +1,6 @@
 # Project Structure Documentation
 
-This document explains the comprehensive folder structure of the Google Sign-In/Sign-Up Authentication & Payment System - a production-ready authentication and payment processing solution with React frontend and Django backend.
+This document explains the comprehensive folder structure of the Google Sign-In/Sign-Up authentication system - a production-ready authentication solution with React frontend and Django backend.
 
 ## 📁 Root Level
 
@@ -95,10 +95,7 @@ apps/backend/
 ```
 docs/
 ├── folder-structure.md    # This file - explains the structure
-├── google-oauth-setup.md  # Google OAuth configuration guide
-├── recaptcha-setup.md     # reCAPTCHA configuration guide
-├── payment-setup.md       # Payment integration guide (Google Pay & PayPal)
-└── docker-setup.md        # Docker containerization guide
+└── google-oauth-setup.md  # Google OAuth configuration guide
 ```
 
 ## 🎯 Key Design Principles

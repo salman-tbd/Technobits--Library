@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useState, useEffect, useCallback } from "react";
 import { AuthApiClient } from "../lib/api";
-import { AuthContextValue, User, ApiError } from "../lib/types";
+import { AuthContextValue, User, ApiError, TwoFactorLoginResponse } from "../lib/types";
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 
@@ -38,11 +38,17 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({
   }, [apiClient]);
 
   const login = useCallback(
-    async (email: string, password: string, recaptchaToken?: string) => {
+    async (email: string, password: string, recaptchaToken?: string): Promise<TwoFactorLoginResponse> => {
       setIsLoading(true);
       try {
-        const userData = await apiClient.login(email, password, recaptchaToken);
-        setUser(userData.user);
+        const response = await apiClient.login(email, password, recaptchaToken);
+        
+        // If 2FA is not required, set user immediately
+        if (!response.requires_2fa && response.user) {
+          setUser(response.user);
+        }
+        
+        return response;
       } catch (error) {
         const apiError = error as ApiError;
         throw new Error(apiError.message);
@@ -98,6 +104,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({
     }
   }, [apiClient]);
 
+  const completeTwoFactorLogin = useCallback((user: User) => {
+    setUser(user);
+  }, []);
+
   // Load user on mount
   useEffect(() => {
     const loadUser = async () => {
@@ -117,6 +127,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({
     googleLoginWithCredential,
     logout,
     refreshUser,
+    completeTwoFactorLogin,
     apiClient,
   };
 
